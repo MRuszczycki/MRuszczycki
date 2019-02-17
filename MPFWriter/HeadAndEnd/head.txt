@@ -1,0 +1,17 @@
+﻿;Folgende Werte werden von CAD/CAM-Systemen grundsätzlich zur Sicherheit angegeben.
+;Beim Programmieren 'von Hand' geht man davon aus, dass diese Werte sowieso so eingestellt sind. 
+
+G40 ;Wekzeugkorrektur aus (nur zur Sicherheit)
+G17 ;Wahl der Arbeitsebene XY (bei Schwenktischen)
+G710 ;metrische Angaben (bei Maschinen, die grundsätzlich mit Inch arbeiten)
+G90 ;Maßangaben sind absolut
+G94 ;Vorschub in mm/min
+
+;Diese Befehle optimieren das CAD-Programm für unsere Anwendungszwecke
+ 
+G641 ADIS=0.4 ;Überschleifen der Ecken mit 0.4mm Konturgenauigkeit
+COMPON ;stetige Geschwindigkeit an den Satzübergängen
+CYCLE832(0.4,_ROUGH,1) ;Konturtoleranz 0.4mm, Bearbeitungsart Schruppen
+
+G54 ;Wahl des Werkstückkoordinatensystems
+G0 X0 Y0 Z50 ;Anfahren der vorderen Ecke des Heizbettes zur Überprüfung des Nullpunktes von G54

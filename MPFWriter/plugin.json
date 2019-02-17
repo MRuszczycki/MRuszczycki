@@ -1,0 +1,8 @@
+{
+    "name": "MPFWriter",
+    "author": "MRuszczycki",
+    "version": "1.0.0",
+    "description": "Output of Numeric Format (MPF-File)",
+    "api": 5,
+    "i18n-catalog": "cura"
+}
