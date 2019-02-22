@@ -9,6 +9,8 @@ from UM.Application import Application
 from UM.Settings.InstanceContainer import InstanceContainer
 from UM.PluginRegistry import PluginRegistry
 
+from math import ceil
+
 class GCodeToMPF():
 
     version = 1
@@ -111,11 +113,15 @@ class GCodeToMPF():
         rEplace = rEplace - self.tempWinkel
         self.tempWinkel = temp
 
+        roundedValue = ceil(rEplace)
 
         if (containsXYZ):
-            return ("SP1=IC(" + str(round(rEplace)) + ")\n")
+            return ("SP1=IC(" + str(roundedValue) + ")\n")
         else:
-            return ("SPOS=IC(" + str(round(rEplace)) + ")\n")
+            if(roundedValue != 0):
+                return ("SPOS=IC(" + str(roundedValue) + ")\n")
+            else:
+                return ("SPOS=IC(1)\n")
 
 
     @classmethod
