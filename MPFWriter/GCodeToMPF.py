@@ -85,11 +85,14 @@ class GCodeToMPF():
             checkEValue = elements[-1:].__str__()
 
 
+
             if (containsXYZ):
                 self.output += "G1 "
             else:
                 self.output += "G0 " + self.calculate(checkEValue[3:-4], containsXYZ)
                 return
+
+            self.roundXYZ(elements)
 
 
             if checkEValue[2:3] is 'E':
@@ -110,6 +113,37 @@ class GCodeToMPF():
 
 
         if (containsXYZ):
-            return ("SP1=IC(" + ('%.3f' % rEplace) + ")\n")
+            return ("SP1=IC(" + str(round(rEplace)) + ")\n")
         else:
-            return ("SPOS=IC(" + ('%.3f' % rEplace) + ")\n")
+            return ("SPOS=IC(" + str(round(rEplace)) + ")\n")
+
+
+    @classmethod
+    def roundXYZ(self, elem):
+        newlineBoolean = None
+        for i in range(len(elem)):
+
+            temp = elem[i]
+            if("\n" in temp):
+                newlineBoolean = True
+            if(self.hasNumbers(temp)):
+                try:
+                    number = float(temp[1:])
+
+                    if(temp.__contains__('X')):
+                        elem[i] = 'X'+ ('%.1f' % number)
+                    elif(temp.__contains__('Y')):
+                        elem[i] = 'Y' + ('%.1f' % number)
+                    elif(temp.__contains__('Z')):
+                        elem[i] = 'Z' + ('%.1f' % number)
+
+                    if(newlineBoolean):
+                        elem[i] += "\n"
+                except ValueError:
+                    pass
+            newlineBoolean = False
+        return
+
+    @classmethod
+    def hasNumbers(self, inputString):
+        return any(char.isdigit() for char in inputString)
