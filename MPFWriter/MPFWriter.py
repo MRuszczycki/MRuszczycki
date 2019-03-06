@@ -3,7 +3,7 @@ import os
 import io
 
 from typing import cast
-from . import GCodeToMPF
+from . import J_Do_It
 
 from UM.Application import Application
 from UM.Logger import Logger
@@ -25,7 +25,7 @@ class MPFWriter(MeshWriter):
         temp_gcode = tempfile.NamedTemporaryFile("w", delete=False)
         gcode_writer = cast(MeshWriter, PluginRegistry.getInstance().getPluginObject("GCodeWriter"))
         success = gcode_writer.write(temp_gcode, None)
-        converter = GCodeToMPF.GCodeToMPF()
+        converter = J_Do_It.DoIt()
         if not success: #Writing the g-code failed. 
             self.setInformation(gcode_writer.getInformation())
             return False

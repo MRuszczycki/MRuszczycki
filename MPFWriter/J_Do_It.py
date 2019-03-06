@@ -9,9 +9,7 @@ from UM.Application import Application
 from UM.Settings.InstanceContainer import InstanceContainer
 from UM.PluginRegistry import PluginRegistry
 
-from math import ceil
-
-class GCodeToMPF():
+class DoIt():
 
     version = 1
 
@@ -47,7 +45,7 @@ class GCodeToMPF():
                 self.counter += 10
             #f.writelines(head.readlines())
             f.write("\n\n\n")
-            
+
             for line in gCodeLines:
                 self.output += "N" + self.counter.__str__() + " "
                 self.readLine(line)
@@ -56,7 +54,7 @@ class GCodeToMPF():
                 self.output = ""
 
             f.write("\n\n\n")
-            
+
             for line in (end.readlines()):
                 f.write("N" + str(self.counter) + " " + line)
                 self.counter += 10
@@ -87,14 +85,11 @@ class GCodeToMPF():
             checkEValue = elements[-1:].__str__()
 
 
-
             if (containsXYZ):
                 self.output += "G1 "
             else:
                 self.output += "G0 " + self.calculate(checkEValue[3:-4], containsXYZ)
                 return
-
-            self.roundXYZ(elements)
 
 
             if checkEValue[2:3] is 'E':
@@ -113,43 +108,8 @@ class GCodeToMPF():
         rEplace = rEplace - self.tempWinkel
         self.tempWinkel = temp
 
-        roundedValue = ceil(rEplace)
 
         if (containsXYZ):
-            return ("SP1=IC(" + str(roundedValue) + ")\n")
+            return ("SP1=IC(" + ('%.3f' % rEplace) + ")\n")
         else:
-            if(roundedValue != 0):
-                return ("SPOS=IC(" + str(roundedValue) + ")\n")
-            else:
-                return ("SPOS=IC(1)\n")
-
-
-    @classmethod
-    def roundXYZ(self, elem):
-        newlineBoolean = None
-        for i in range(len(elem)):
-
-            temp = elem[i]
-            if("\n" in temp):
-                newlineBoolean = True
-            if(self.hasNumbers(temp)):
-                try:
-                    number = float(temp[1:])
-
-                    if(temp.__contains__('X')):
-                        elem[i] = 'X'+ ('%.1f' % number)
-                    elif(temp.__contains__('Y')):
-                        elem[i] = 'Y' + ('%.1f' % number)
-                    elif(temp.__contains__('Z')):
-                        elem[i] = 'Z' + ('%.1f' % number)
-
-                    if(newlineBoolean):
-                        elem[i] += "\n"
-                except ValueError:
-                    pass
-            newlineBoolean = False
-        return
-
-    @classmethod
-    def hasNumbers(self, inputString):
-        return any(char.isdigit() for char in inputString)
+            return ("SPOS=IC(" + ('%.3f' % rEplace) + ")\n")
