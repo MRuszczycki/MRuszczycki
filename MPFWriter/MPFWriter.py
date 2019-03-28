@@ -23,6 +23,7 @@ class MPFWriter(MeshWriter):
 
         #Store the g-code from the scene.
         temp_gcode = tempfile.NamedTemporaryFile("w", delete=False)
+        name = temp_gcode.name
         gcode_writer = cast(MeshWriter, PluginRegistry.getInstance().getPluginObject("GCodeWriter"))
         success = gcode_writer.write(temp_gcode, None)
         converter = J_Do_It.DoIt()
@@ -45,7 +46,7 @@ class MPFWriter(MeshWriter):
             return False
 
         try: 
-            converter.openFile(temp_gcode.name, stream.name, head, end)
+            converter.openFile(name, stream.name, head, end)
             
             
             

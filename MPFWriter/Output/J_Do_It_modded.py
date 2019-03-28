@@ -11,24 +11,22 @@ from UM.PluginRegistry import PluginRegistry
 
 class DoIt():
 
-    version = 1
-
+    version = 2
     gCodeFile = None
-
     path = ""
-
     output =""
-
-    verrechnungswert = 0.4497
-
     tempWinkel = 0.0
-
     counter = 10
 
+    #Variablen
+    verrechnungswert = 0.4497
+    xVar = 'X'
+    yVar = 'Y'
+    zVar = 'Z'
+    g0Var = 'G'
+    g1Var = 'G12'
+    #/Variablen
 
-    """def __init__(self):
-        super.__init__()
-        #self.openFile("C:/Users/Max/Desktop/a.gcode")"""
 
     @classmethod
     def openFile(self, pathSource, pathTarget, head, end):
@@ -64,43 +62,55 @@ class DoIt():
 
         return
 
-    @classmethod
     def readLine(self, line):
 
+        elements = line.split(" ")
 
-        if (line[:2] != "G0" and line[:2] != "G1"):
-
-            if line[:1] is not ';':
-                if line[:3] == "G92":
+        if(elements[0] != "G0" and elements[0] != "G1"):
+            if ";" not in elements[0]:
+                if elements[0] == "G92":
                     self.tempWinkel = 0.0
                 self.output += ";" + line
             else:
                 self.output += line
             return
         else:
-
             containsXYZ = line.__contains__('X') or line.__contains__('Y') or line.__contains__('Z')
-
-            elements = line.split(" ")
             checkEValue = elements[-1:].__str__()
 
-
-            if (containsXYZ):
-                self.output += "G1 "
+            if containsXYZ:
+                self.output += self.g1Var + " "
             else:
-                self.output += "G0 " + self.calculate(checkEValue[3:-4], containsXYZ)
+                self.output += self.g0Var + " " + self.calculate(checkEValue[3:-4], containsXYZ)
                 return
 
-
             if checkEValue[2:3] is 'E':
-                self.output += " ".join(elements[1:-1]) + " " + (self.calculate(checkEValue[3:-4], containsXYZ))
+                self.output += self.replaceVars(elements[1:-1]) + " " + (self.calculate(checkEValue[3:-4], containsXYZ))
                 return
             else:
                 self.output += " ".join(elements[1:])
 
+
+    def replaceVars(self, elements):
+        moddedLine = ''
+
+        for strValue in elements:
+            if 'X' in strValue:
+                moddedLine += self.xVar + " " + strValue[1:]
+            elif 'Y' in strValue:
+                moddedLine += self.yVar + " " + strValue[1:]
+            elif 'Z' in strValue:
+                moddedLine += self.zVar + " " + strValue[1:]
+            else:
+                moddedLine += strValue
+
+        return moddedLine
+
+
+
     @classmethod
     def calculate(self, value, containsXYZ):
-        #value = value.__getitem__(0)
+        # value = value.__getitem__(0)
         value = float(value)
         rEplace = value * self.verrechnungswert * 360.0 * 1.02 * 2
 
@@ -108,8 +118,11 @@ class DoIt():
         rEplace = rEplace - self.tempWinkel
         self.tempWinkel = temp
 
-
         if (containsXYZ):
             return ("SP1=IC(" + ('%.3f' % rEplace) + ")\n")
         else:
             return ("SPOS=IC(" + ('%.3f' % rEplace) + ")\n")
+
+
+
+
