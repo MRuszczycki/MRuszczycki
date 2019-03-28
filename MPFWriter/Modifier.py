@@ -1,5 +1,5 @@
 
-
+import os
 
 class Modifier:
     # Variablen
@@ -54,10 +54,13 @@ class Modifier:
 
 
 
-        file = open("./Output/J_Do_It_modded.py", 'w+')
-        code = "\n".join(codeLines)
-        file.write(code)
-        file.close()
+        # file = open("./Output/J_Do_It_modded.py", 'w+')
+        # code = "\n".join(codeLines)
+        # file.write(code)
+        # file.close()
+
+        # os.system('start cmd /k "python compile.py build_ext --inplace"')
+        os.system("start python compile.py build_ext --inplace")
 
         return
 
@@ -74,5 +77,7 @@ class Modifier:
         self.modifyCode()
 
 
-foo = Modifier()
-foo.__init__()
+# foo = Modifier()
+# foo.__init__()
+
+Modifier()
