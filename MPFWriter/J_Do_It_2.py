@@ -32,7 +32,7 @@ class DoIt():
         with io.open(pathTarget, "w+", encoding="utf8") as f:
 
             for line in (head.readlines()):
-                f.write("N" + str(self.counter) + " " + line)
+                f.write("N" + self.counter.__str__() + " " + line)
                 self.counter += 10
             #f.writelines(head.readlines())
             f.write("\n\n\n")
@@ -47,7 +47,7 @@ class DoIt():
             f.write("\n\n\n")
 
             for line in (end.readlines()):
-                f.write("N" + str(self.counter) + " " + line)
+                f.write("N" + self.counter.__str__() + " " + line)
                 self.counter += 10
             #f.writelines(end.readlines())
         self.counter = 10

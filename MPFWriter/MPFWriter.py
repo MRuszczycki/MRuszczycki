@@ -3,7 +3,7 @@ import os
 import io
 
 from typing import cast
-from . import J_Do_It
+from . import J_Do_It_2
 
 from UM.Application import Application
 from UM.Logger import Logger
@@ -26,7 +26,7 @@ class MPFWriter(MeshWriter):
         name = temp_gcode.name
         gcode_writer = cast(MeshWriter, PluginRegistry.getInstance().getPluginObject("GCodeWriter"))
         success = gcode_writer.write(temp_gcode, None)
-        converter = J_Do_It.DoIt()
+        #converter = J_Do_It.DoIt()
         if not success: #Writing the g-code failed. 
             self.setInformation(gcode_writer.getInformation())
             return False
@@ -46,7 +46,7 @@ class MPFWriter(MeshWriter):
             return False
 
         try: 
-            converter.openFile(name, stream.name, head, end)
+            J_Do_It_2.DoIt.openFile(name, stream.name, head, end)
             
             
             
