@@ -1,0 +1,9 @@
+G1 Z=IC(100) F4000 ;inkrementales Abfahren nach oben vom fertigen Werkstück.
+
+G60 ;Abwahl G641
+CYCLE832(0,_OFF,1) ;Abwahl CYCLE832
+COMPOF ;Abwahl COMPON
+
+
+
+M30;Ende des Programms

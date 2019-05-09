@@ -72,12 +72,14 @@ class Modifier:
         self.g1Var = g1
         return
 
-    def __init__(self):
-        self.setVariables('X', 'Y', 'Z', 'G', 'G12')
+    def __init__(self, g0, g1, x, y, z):
+        self.setVariables(x, y, z, g0, g1)
         self.modifyCode()
 
+    if __name__ == "__main__":
+        pass
+    else:
+        __init__()
 
-# foo = Modifier()
-# foo.__init__()
 
-Modifier()
+
