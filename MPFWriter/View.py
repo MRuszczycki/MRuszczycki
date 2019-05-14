@@ -1,15 +1,5 @@
-import sys
-
-from pip import __main__
-
-
-from . import Modifier
-
+from Modifier import Modifier
 import tkinter as tk
-
-
-if __name__ == '__main__':
-    sys.exit(__main__._main())
 
 class Application():
     erstellen = None
@@ -21,11 +11,16 @@ class Application():
     xLabel= None
     yLabel=None
     zLabel=None
+    v3_6=None
+    v4_0=None
+    versionControl=""
+    version36 = "3.6"
+    version40 = "4.0"
 
 
 
     def __init__(self, master):
-        super().__init__()
+        #super().__init__()
 
         #self.master = master
         #self.grid()
@@ -47,6 +42,8 @@ class Application():
         self.yLabel = tk.Label(frame, text="00.000")
         self.zLabel = tk.Label(frame, text="00.000")
 
+        #self.v3_6 = tk.Checkbutton(frame, test="Version 3.6", variable=self.version36)
+
         self.g0Field.insert("end", "G0")
         self.g1Field.insert(0, "G1")
         self.xField.insert(0, "X")
@@ -63,6 +60,7 @@ class Application():
         self.zField.grid(row=2, column=5)
         self.zLabel.grid(row=2, column=6)
         tk.Label(frame, text ="SPOS=(00.00)").grid(row=2, column=7)
+        #self.v3_6.grid(row=3, column = 2)
         self.erstellen.grid(row=3, column=5)
 
     def createData(self):
@@ -73,11 +71,12 @@ class Application():
         y = self.yField.get()
         z = self.zField.get()
 
-        mod.Modifier()
+        Modifier(g0, g1, x, y, z)
 
 
 
 
 root = tk.Tk()
-app = Application(root)
+Application(root)
+#app = Application(root)
 root.mainloop()

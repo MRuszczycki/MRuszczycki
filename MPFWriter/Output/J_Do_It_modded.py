@@ -3,12 +3,6 @@
 
 import io
 
-from UM.Mesh.MeshWriter import MeshWriter
-from UM.Logger import Logger
-from UM.Application import Application
-from UM.Settings.InstanceContainer import InstanceContainer
-from UM.PluginRegistry import PluginRegistry
-
 class DoIt():
 
     version = 2
@@ -20,13 +14,12 @@ class DoIt():
 
     #Variablen
     verrechnungswert = 0.4497
-    xVar = 'X'
-    yVar = 'Y'
-    zVar = 'Z'
-    g0Var = 'G'
-    g1Var = 'G12'
+    xVar = 'XL'
+    yVar = 'YL'
+    zVar = 'ZL'
+    g1Var = 'G1'
+    g0Var = 'G0'
     #/Variablen
-
 
     @classmethod
     def openFile(self, pathSource, pathTarget, head, end):
@@ -39,7 +32,7 @@ class DoIt():
         with io.open(pathTarget, "w+", encoding="utf8") as f:
 
             for line in (head.readlines()):
-                f.write("N" + str(self.counter) + " " + line)
+                f.write("N" + self.counter.__str__() + " " + line)
                 self.counter += 10
             #f.writelines(head.readlines())
             f.write("\n\n\n")
@@ -54,7 +47,7 @@ class DoIt():
             f.write("\n\n\n")
 
             for line in (end.readlines()):
-                f.write("N" + str(self.counter) + " " + line)
+                f.write("N" + self.counter.__str__() + " " + line)
                 self.counter += 10
             #f.writelines(end.readlines())
         self.counter = 10
@@ -62,6 +55,7 @@ class DoIt():
 
         return
 
+    @classmethod
     def readLine(self, line):
 
         elements = line.split(" ")
@@ -85,22 +79,22 @@ class DoIt():
                 return
 
             if checkEValue[2:3] is 'E':
-                self.output += self.replaceVars(elements[1:-1]) + " " + (self.calculate(checkEValue[3:-4], containsXYZ))
+                self.output += self.replaceVars(elements[1:-1]) + (self.calculate(checkEValue[3:-4], containsXYZ))
                 return
             else:
                 self.output += " ".join(elements[1:])
 
-
+    @classmethod
     def replaceVars(self, elements):
         moddedLine = ''
 
         for strValue in elements:
             if 'X' in strValue:
-                moddedLine += self.xVar + " " + strValue[1:]
+                moddedLine += self.xVar + strValue[1:] + " "
             elif 'Y' in strValue:
-                moddedLine += self.yVar + " " + strValue[1:]
+                moddedLine += self.yVar + strValue[1:] + " "
             elif 'Z' in strValue:
-                moddedLine += self.zVar + " " + strValue[1:]
+                moddedLine += self.zVar + strValue[1:] + " "
             else:
                 moddedLine += strValue
 

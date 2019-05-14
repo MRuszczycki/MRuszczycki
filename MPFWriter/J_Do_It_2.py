@@ -96,7 +96,7 @@ class DoIt():
             elif 'Z' in strValue:
                 moddedLine += self.zVar + strValue[1:] + " "
             else:
-                moddedLine += strValue
+                moddedLine += strValue + " "
 
         return moddedLine
 

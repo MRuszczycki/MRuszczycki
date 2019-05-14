@@ -1,5 +1,6 @@
 
 import os
+import py_compile
 
 class Modifier:
     # Variablen
@@ -54,13 +55,15 @@ class Modifier:
 
 
 
-        # file = open("./Output/J_Do_It_modded.py", 'w+')
-        # code = "\n".join(codeLines)
-        # file.write(code)
-        # file.close()
+        file = open("./Output/J_Do_It_2.py", 'w+')
+        code = "\n".join(codeLines)
+        file.write(code)
+        file.close()
+        py_compile.compile("./Output/J_Do_It_2.py")
+
 
         # os.system('start cmd /k "python compile.py build_ext --inplace"')
-        os.system("start python compile.py build_ext --inplace")
+        #os.system("start python compile.py build_ext --inplace")
 
         return
 
@@ -76,10 +79,6 @@ class Modifier:
         self.setVariables(x, y, z, g0, g1)
         self.modifyCode()
 
-    if __name__ == "__main__":
-        pass
-    else:
-        __init__()
 
 
 
